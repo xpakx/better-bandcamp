@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		if(albumData && linkData) {
 			var album = JSON.parse(albumData.innerHTML);
 			var links = JSON.parse(linkData.getAttribute('data-tralbum')!);
-			console.log(links);
 			img.src = album['image'];
 			artist.textContent = album['byArtist']['name']
 			title.textContent = album['name'];
@@ -45,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		} else {
 			console.log("Couldn't get album data!");
 		}
+
+		preparePlayer();
 	});
 
 	console.log("Injecting CSS");
@@ -59,3 +60,87 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+
+function preparePlayer() {
+	console.log("Preparing player");
+
+	const audio = document.getElementById('audio') as (undefined | HTMLAudioElement);
+	const playPauseBtn = document.getElementById('play-pause');
+	const progressContainer = document.getElementById('progress-container');
+	const progress = document.getElementById('progress');
+	const currentTimeElem = document.getElementById('current-time');
+	const durationElem = document.getElementById('duration');
+	const tracks = document.querySelectorAll('.tracks ul li');
+	const title = document.getElementById('current-song-name');
+
+	if(!audio || !playPauseBtn || !progressContainer || !progress || !currentTimeElem || !durationElem || !tracks || !title) {
+		return;
+	}
+
+	let currentTrack = 0;
+	newTrack(tracks[0], 0);
+
+	let isPlaying = false;
+
+	playPauseBtn.addEventListener('click', () => {
+		if (isPlaying) {
+			audio.pause();
+		} else {
+			audio.play();
+		}
+	});
+
+	audio.addEventListener('play', () => {
+		isPlaying = true;
+		playPauseBtn.textContent = '⏸';
+	});
+
+	audio.addEventListener('pause', () => {
+		isPlaying = false;
+		playPauseBtn.textContent = '⏵';
+	});
+
+	audio.addEventListener('timeupdate', () => {
+		const { currentTime, duration } = audio;
+		const progressPercent = (currentTime / duration) * 100;
+		progress.style.width = `${progressPercent}%`;
+
+		let minutes = Math.floor(currentTime / 60);
+		let seconds = Math.floor(currentTime % 60);
+		let secString = (seconds >= 10) ? `${seconds}` : `0${seconds}`;
+		currentTimeElem.textContent = `${minutes}:${secString}`;
+
+		if (duration) {
+			let totalMinutes = Math.floor(duration / 60);
+			let totalSeconds = Math.floor(duration % 60);
+			let secString = (totalSeconds >= 10) ? `${totalSeconds}` : `0${totalSeconds}`;
+			durationElem.textContent = `${totalMinutes}:${secString}`;
+		}
+	});
+
+	progressContainer.addEventListener('click', (e) => {
+		const width = progressContainer.clientWidth;
+		const clickX = e.offsetX;
+		const duration = audio.duration;
+
+		audio.currentTime = (clickX / width) * duration;
+	});
+
+	function newTrack(track: Element, index: number) {
+		if(!audio || !title) {
+			return;
+		}
+		audio.src = track.getAttribute('data-src')!;
+		title.textContent = track.textContent;
+		if(currentTrack !== undefined && currentTrack < tracks.length) {
+			tracks[currentTrack].classList.remove("currentTrack");
+		}
+		track.classList.add("currentTrack");
+		currentTrack = index;
+		audio.play();
+	}
+
+	tracks.forEach((track, index) => {
+		track.addEventListener('click', () => newTrack(track, index));
+	});
+}
