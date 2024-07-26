@@ -118,6 +118,13 @@ function preparePlayer() {
 		}
 	});
 
+	audio.addEventListener('ended', () => {
+		if(currentTrack === undefined || currentTrack == tracks.length - 1) {
+			return;
+		}
+		newTrack(tracks[currentTrack + 1], currentTrack + 1);
+	});
+
 	progressContainer.addEventListener('click', (e) => {
 		const width = progressContainer.clientWidth;
 		const clickX = e.offsetX;
