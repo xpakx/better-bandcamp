@@ -76,7 +76,10 @@ function preparePlayer() {
 	const tracks = document.querySelectorAll('.tracks ul li');
 	const title = document.getElementById('current-song-name');
 
+	let repeatMode = false;
+
 	if(!audio || !playPauseBtn || !progressContainer || !progress || !currentTimeElem || !durationElem || !tracks || !title) {
+		console.error("Cannot initialize player!");
 		return;
 	}
 
@@ -122,11 +125,22 @@ function preparePlayer() {
 	});
 
 	audio.addEventListener('ended', () => {
-		if(currentTrack === undefined || currentTrack == tracks.length - 1) {
+		if(currentTrack === undefined) {
 			return;
 		}
-		newTrack(tracks[currentTrack + 1], currentTrack + 1);
+		const nextTrack = currentTrack == tracks.length - 1 ? 0 : currentTrack + 1;
+		if(nextTrack == 0 && !repeatMode) {
+			return;
+		}
+		newTrack(tracks[nextTrack], nextTrack);
 	});
+
+	document.addEventListener('keydown', (e) => {
+		if(e.key == 'r') { // TODO: move to API and make it controllable by tridactyl
+			repeatMode = !repeatMode;
+			// TODO: add indicators for currently active modes
+		}
+	}); 
 
 	progressContainer.addEventListener('click', (e) => {
 		const width = progressContainer.clientWidth;
