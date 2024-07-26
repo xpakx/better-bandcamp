@@ -118,6 +118,10 @@ body {
     font-weight: 700;
 }
 
+.tracks li.unavailable { /* TODO */
+   opacity: 60%; 
+}
+
 .controls {
     display: flex;
     align-items: center;

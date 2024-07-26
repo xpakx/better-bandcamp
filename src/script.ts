@@ -40,7 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			for(let track of tracksData) {
 				const trackLi = document.createElement("li");
 				trackLi.textContent = track['title'];
-				trackLi.setAttribute('data-src', track['file']['mp3-128']);
+				if(track['file']) {
+					trackLi.setAttribute('data-src', track['file']['mp3-128']);
+				} else {
+					trackLi.classList.add("unavailable");
+				}
 				tracks.appendChild(trackLi);
 			}
 			
@@ -73,7 +77,7 @@ function preparePlayer() {
 	const progress = document.getElementById('progress');
 	const currentTimeElem = document.getElementById('current-time');
 	const durationElem = document.getElementById('duration');
-	const tracks = document.querySelectorAll('.tracks ul li');
+	const tracks = document.querySelectorAll('.tracks ul li[data-src]');
 	const title = document.getElementById('current-song-name');
 
 	let repeatMode = false;
