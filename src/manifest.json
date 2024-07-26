@@ -8,9 +8,12 @@
       "matches": [
         "*://*.bandcamp.com/*"
       ],
-      "js": [
-        "script.ts"
-      ]
+      "js": [ "script.ts" ]
     }
+  ],
+  "web_accessible_resources": [
+        "styles/styles.css",
+	"pages/*"
   ]
 }
+
