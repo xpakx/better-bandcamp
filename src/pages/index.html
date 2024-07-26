@@ -1,1 +1,37 @@
-<h2>Hello world!</h2>
+
+<div class="player">
+	<div class="details">
+		<div class="info">
+			<h2 class="title">Title</h2>
+			<p class="artist">Artist</p>
+		</div>
+		<div class="cover">
+			<img alt="Album Cover">
+		</div>
+	</div>
+	<div class="controls">
+		<button id="play-pause">⏵</button>
+		<div id="current-song">
+			<div id="current-song-name">Song</div>
+			<div id="current-song-data">
+				<div id="progress-container">
+					<div id="progress"></div>
+				</div>
+				<span id="current-time">0:00</span> / <span id="duration">0:00</span>
+			</div>
+		</div>
+	</div>
+	<div class="tags">
+		<span class="tag">Tag</span>
+	</div>
+	<div class="tracks">
+		<ul>
+			<li data-src="">Song</li>
+		</ul>
+	</div>
+</div>
+
+<audio id="audio">
+	<source type="audio/mpeg">
+	Your browser does not support the audio element.
+</audio>

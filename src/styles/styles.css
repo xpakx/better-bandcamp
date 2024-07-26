@@ -1,3 +1,186 @@
+body, body * {
+  all: revert;
+}
+
+:root {
+  --main-bg-color: #f5f5f5;
+  --player-bg-color: white;
+  --album-title-color: #333;
+  --faded-color: #666;
+  --button-bg-color: #f0f0f0;
+  --button-fg-color: #666;
+  --track-hover-bg-color: #e0e0e0;
+  --control-bg-color: #333;
+  --control-hover-bg-color: #555;
+  --progressbar-color: #333;
+  --main-text-color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+	  --main-bg-color: #181825;
+	  --player-bg-color: #1e1e2e;
+	  --album-title-color: #cdd6f4;
+	  --faded-color: #9399b2;
+	  --button-bg-color: #585b70;
+	  --button-fg-color: #181825;
+	  --track-hover-bg-color: #6c7086;
+	  --control-bg-color: #313244;
+	  --control-hover-bg-color: #45475a;
+	  --progressbar-color: #f2cdcd;
+	  --main-text-color: #cdd6f4;
+  }
+}
+
 body {
-	background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    font-family: 'Arial', sans-serif;
+}
+
+.player {
+    background-color: var(--player-bg-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* TODO */
+    width: 400px;
+    text-align: left;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cover img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.details {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.info {
+    margin-bottom: 15px;
+}
+
+.title {
+    font-size: 1.2em;
+    margin: 0;
+    color: var(--album-title-color);
+}
+
+.artist {
+    font-size: 0.9em;
+    color: var(--faded-color);
+}
+
+.tracks {
+    margin-bottom: 15px;
+}
+
+.tracks ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tracks li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--button-bg-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: var(--button-fg-color);
+    font-size: 0.8em;
+}
+
+.tracks li:hover {
+    background-color: var(--track-hover-bg-color);
+}
+
+.tracks li.currentTrack { /* TODO */
+    font-weight: 700;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#current-song {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#current-song-name {
+    margin: 0 10px;
+    color: var(--faded-color);
+    font-size: 0.8em;
+}
+
+#current-song-data {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#play-pause {
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--control-bg-color);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#play-pause:hover {
+    background-color: var(--control-hover-bg-color);
+}
+
+#progress-container {
+    background-color: var(--button-bg-color);
+    border-radius: 5px;
+    flex: 1;
+    height: 10px;
+    margin: 0 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+#progress {
+    background-color: var(--progressbar-color);
+    height: 100%;
+    width: 0;
+    border-radius: 5px;
+}
+
+#current-time,
+#duration {
+    font-size: 0.8em;
+    color: var(--faded-color);
+}
+
+.tags {
+    margin-top: 20px;
+    display: flex;
+    gap: 5px;
+}
+
+.tag {
+    background-color: var(--button-bg-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    color: var(--button-fg-color);
 }
