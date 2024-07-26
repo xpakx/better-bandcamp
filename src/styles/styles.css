@@ -83,6 +83,11 @@ body {
     color: var(--faded-color);
 }
 
+.year {
+    font-size: 0.7em;
+    color: var(--faded-color);
+}
+
 .tracks {
     margin-bottom: 15px;
 }
@@ -176,6 +181,8 @@ body {
     margin-top: 20px;
     display: flex;
     gap: 5px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .tag {

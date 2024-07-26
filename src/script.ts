@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		var img = document.body.querySelector(".cover img") as HTMLImageElement;
 		var title = document.body.getElementsByClassName("title")[0];
 		var artist = document.body.getElementsByClassName("artist")[0];
+		var year = document.body.getElementsByClassName("year")[0];
 		var tags = document.body.getElementsByClassName("tags")[0];
 		var tracks = document.body.querySelector(".tracks ul")!;
 
@@ -33,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				tags.appendChild(tag);
 			}
 			let published = album['datePublished'];
+			let releaseDate = new Date(published);
+			year.textContent = releaseDate.getFullYear().toString();
 			let tracksData = links['trackinfo'];
 			for(let track of tracksData) {
 				const trackLi = document.createElement("li");
