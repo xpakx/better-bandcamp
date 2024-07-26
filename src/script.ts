@@ -16,10 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		var tracks = document.body.querySelector(".tracks ul")!;
 
 		var albumData = document.head.querySelector('script[type="application/ld+json"]');
+		var linkData = document.head.querySelector('script[data-cart]');
 
-		if(albumData ) {
+		if(albumData && linkData) {
 			var album = JSON.parse(albumData.innerHTML);
-			console.log(album);
+			var links = JSON.parse(linkData.getAttribute('data-tralbum')!);
+			console.log(links);
 			img.src = album['image'];
 			artist.textContent = album['byArtist']['name']
 			title.textContent = album['name'];
@@ -32,10 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				tags.appendChild(tag);
 			}
 			let published = album['datePublished'];
-			let tracksData = album['track']['itemListElement'];
+			let tracksData = links['trackinfo'];
 			for(let track of tracksData) {
 				const trackLi = document.createElement("li");
-				trackLi.textContent = track['item']['name'];
+				trackLi.textContent = track['title'];
+				trackLi.setAttribute('data-src', track['file']['mp3-128']);
 				tracks.appendChild(trackLi);
 			}
 			
