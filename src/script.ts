@@ -81,6 +81,7 @@ function preparePlayer() {
 	const title = document.getElementById('current-song-name');
 
 	let repeatMode = false;
+	let singleSongMode = false;
 
 	if(!audio || !playPauseBtn || !progressContainer || !progress || !currentTimeElem || !durationElem || !tracks || !title) {
 		console.error("Cannot initialize player!");
@@ -128,21 +129,33 @@ function preparePlayer() {
 		}
 	});
 
+	function getNextIndex(currentIndex: number): number {
+		if(singleSongMode) {
+			return currentIndex;
+		}
+		return currentIndex == tracks.length - 1 ? 0 : currentIndex + 1;
+	}
+
+	function normalMode(): boolean {
+		return !repeatMode && !singleSongMode;
+	}
+
 	audio.addEventListener('ended', () => {
-		if(currentTrack === undefined) {
-			return;
-		}
-		const nextTrack = currentTrack == tracks.length - 1 ? 0 : currentTrack + 1;
-		if(nextTrack == 0 && !repeatMode) {
-			return;
-		}
+		if(currentTrack === undefined) { return; }
+		if(singleSongMode && !repeatMode) { return; }
+		const nextTrack = getNextIndex(currentTrack);
+		if(nextTrack == 0 && normalMode()) { return; }
 		newTrack(tracks[nextTrack], nextTrack);
 	});
 
 	document.addEventListener('keydown', (e) => {
-		if(e.key == 'r') { // TODO: move to API and make it controllable by tridactyl
+		// TODO: move to API and make it controllable by tridactyl
+		// TODO: add indicators for currently active modes
+		if(e.key == 'r') {
 			repeatMode = !repeatMode;
-			// TODO: add indicators for currently active modes
+		} else if(e.key == 's') {
+			singleSongMode = !singleSongMode;
+		}
 		}
 	}); 
 
