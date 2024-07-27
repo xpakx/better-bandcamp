@@ -189,6 +189,21 @@ function preparePlayer() {
 		audio.currentTime += s;
 	}
 
+	function stop() {
+		if(!audio) return; 
+		resetTimer();
+		audio.pause();
+	}
+
+	function switchPlay() {
+		if(!audio) return; 
+		if(audio.paused) {
+			audio.play();
+		} else {
+			audio.pause();
+		}
+	}
+
 	document.addEventListener('keydown', (e) => {
 		// TODO: move to API and make it controllable by tridactyl
 		// TODO: add indicators for currently active modes
@@ -204,6 +219,10 @@ function preparePlayer() {
 			tryNextSong();
 		} else if(e.key == 'ArrowUp') {
 			tryPrevSong();
+		} else if(e.key == 'S') {
+			stop();
+		} else if(e.key == 'p') {
+			switchPlay();
 		}
 	}); 
 
