@@ -92,11 +92,13 @@ body {
     margin-bottom: 15px;
     max-height: 300px;
     overflow-y: auto;
+    margin-top: 5px;
 }
 
 .tracks ul {
     list-style-type: none;
     padding: 0;
+    margin-top: 0;
 }
 
 .tracks li {

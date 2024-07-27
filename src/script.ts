@@ -78,12 +78,13 @@ function preparePlayer() {
 	const currentTimeElem = document.getElementById('current-time');
 	const durationElem = document.getElementById('duration');
 	const tracks = document.querySelectorAll('.tracks ul li[data-src]');
+	const tracksParent = document.querySelector('.tracks');
 	const title = document.getElementById('current-song-name');
 
 	let repeatMode = false;
 	let singleSongMode = false;
 
-	if(!audio || !playPauseBtn || !progressContainer || !progress || !currentTimeElem || !durationElem || !tracks || !title) {
+	if(!audio || !playPauseBtn || !progressContainer || !progress || !currentTimeElem || !durationElem || !tracks || !title || !tracksParent) {
 		console.error("Cannot initialize player!");
 		return;
 	}
@@ -234,8 +235,16 @@ function preparePlayer() {
 		audio.currentTime = (clickX / width) * duration;
 	});
 
+	function isOverflowed(element: Element, parent: Element) {
+	    const track = element.getBoundingClientRect();
+	    const trackList = parent.getBoundingClientRect();
+	    const dTop = track.top - trackList.top; 
+	    const dBottom = trackList.bottom - track.bottom; 
+            return dTop < 0 || dBottom < 0; 
+	}
+
 	function newTrack(track: Element, index: number) {
-		if(!audio || !title) {
+		if(!audio || !title || !tracksParent) {
 			return;
 		}
 		audio.src = track.getAttribute('data-src')!;
@@ -246,6 +255,10 @@ function preparePlayer() {
 		track.classList.add("currentTrack");
 		currentTrack = index;
 		audio.play();
+
+		if(isOverflowed(tracks[currentTrack], tracksParent)) {
+			tracks[currentTrack].scrollIntoView();
+		}
 	}
 
 	tracks.forEach((track, index) => {
