@@ -142,11 +142,22 @@ function preparePlayer() {
 
 	audio.addEventListener('ended', () => {
 		if(currentTrack === undefined) { return; }
-		if(singleSongMode && !repeatMode) { return; }
+		if(singleSongMode && !repeatMode) {
+			resetTimer();
+			return; 
+		}
 		const nextTrack = getNextIndex(currentTrack);
-		if(nextTrack == 0 && normalMode()) { return; }
+		if(nextTrack == 0 && normalMode()) { 
+			resetTimer();
+			return; 
+		}
 		newTrack(tracks[nextTrack], nextTrack);
 	});
+
+	function resetTimer() {
+		if(!audio) return; 
+		audio.currentTime = 0;
+	}
 
 	document.addEventListener('keydown', (e) => {
 		// TODO: move to API and make it controllable by tridactyl
