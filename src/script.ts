@@ -159,6 +159,11 @@ function preparePlayer() {
 		audio.currentTime = 0;
 	}
 
+	function jumpSeconds(s: number) {
+		if(!audio) return; 
+		audio.currentTime += s;
+	}
+
 	document.addEventListener('keydown', (e) => {
 		// TODO: move to API and make it controllable by tridactyl
 		// TODO: add indicators for currently active modes
@@ -166,7 +171,10 @@ function preparePlayer() {
 			repeatMode = !repeatMode;
 		} else if(e.key == 's') {
 			singleSongMode = !singleSongMode;
-		}
+		} else if(e.key == 'ArrowLeft') {
+			jumpSeconds(-5);
+		} else if(e.key == 'ArrowRight') {
+			jumpSeconds(5);
 		}
 	}); 
 
