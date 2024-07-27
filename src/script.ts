@@ -136,11 +136,22 @@ function preparePlayer() {
 		return currentIndex == tracks.length - 1 ? 0 : currentIndex + 1;
 	}
 
+	function getPrevIndex(currentIndex: number): number {
+		if(singleSongMode) {
+			return currentIndex;
+		}
+		return currentIndex == 0 ? tracks.length - 1 : currentIndex - 1;
+	}
+
 	function normalMode(): boolean {
 		return !repeatMode && !singleSongMode;
 	}
 
 	audio.addEventListener('ended', () => {
+		tryNextSong();
+	});
+
+	function tryNextSong() {
 		if(currentTrack === undefined) { return; }
 		if(singleSongMode && !repeatMode) {
 			resetTimer();
@@ -152,7 +163,21 @@ function preparePlayer() {
 			return; 
 		}
 		newTrack(tracks[nextTrack], nextTrack);
-	});
+	}
+
+	function tryPrevSong() {
+		if(currentTrack === undefined) { return; }
+		if(singleSongMode && !repeatMode) {
+			resetTimer();
+			return; 
+		}
+		const nextTrack = getPrevIndex(currentTrack);
+		if(nextTrack == tracks.length - 1 && normalMode()) { 
+			resetTimer();
+			return; 
+		}
+		newTrack(tracks[nextTrack], nextTrack);
+	}
 
 	function resetTimer() {
 		if(!audio) return; 
@@ -175,6 +200,10 @@ function preparePlayer() {
 			jumpSeconds(-5);
 		} else if(e.key == 'ArrowRight') {
 			jumpSeconds(5);
+		} else if(e.key == 'ArrowDown') {
+			tryNextSong();
+		} else if(e.key == 'ArrowUp') {
+			tryPrevSong();
 		}
 	}); 
 
