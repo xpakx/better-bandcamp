@@ -205,6 +205,16 @@ function preparePlayer() {
 		}
 	}
 
+	function downloadSong(index: number) {
+		if(!audio) return;
+		if(index < 0 || index >= tracks.length) return;
+		const a = document.createElement('a');
+
+		a.setAttribute('href', audio.src);
+		a.setAttribute('download', `${tracks[index].textContent}.mp3`);
+		a.click(); 
+	}
+
 	document.addEventListener('keydown', (e) => {
 		// TODO: move to API and make it controllable by tridactyl
 		// TODO: add indicators for currently active modes
@@ -224,6 +234,8 @@ function preparePlayer() {
 			stop();
 		} else if(e.key == 'p') {
 			switchPlay();
+		} else if(e.key == 'g') {
+			downloadSong(currentTrack);
 		}
 	}); 
 
