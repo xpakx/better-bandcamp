@@ -16,6 +16,17 @@
   "web_accessible_resources": [
         "styles/styles.css",
 	"pages/*"
-  ]
+  ],
+  "permissions": [ "tabs" ],
+  "background": {
+    "scripts": [
+      "background.ts"
+    ],
+    "persistent": false
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "better-bandcamp@etxtJDTNp8UwNs"
+    }
+  }
 }
-

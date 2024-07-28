@@ -1,3 +1,4 @@
+import { APIMessage } from "./background";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -218,9 +219,7 @@ function preparePlayer() {
 	document.addEventListener('keydown', (e) => {
 		// TODO: move to API and make it controllable by tridactyl
 		// TODO: add indicators for currently active modes
-		if(e.key == 'r') {
-			repeatMode = !repeatMode;
-		} else if(e.key == 's') {
+		if(e.key == 's') {
 			singleSongMode = !singleSongMode;
 		} else if(e.key == 'ArrowLeft') {
 			jumpSeconds(-5);
@@ -238,6 +237,17 @@ function preparePlayer() {
 			downloadSong(currentTrack);
 		}
 	}); 
+
+	browser.runtime.onMessage.addListener((message: APIMessage, _sender) => {
+		console.log("Received API message", message);
+		switch (message.action) {
+			case "repeatMode": 
+				repeatMode = message.value ?? !repeatMode;
+			        console.log("repeat mode: ", repeatMode);
+				break;
+		}
+	});
+
 
 	progressContainer.addEventListener('click', (e) => {
 		const width = progressContainer.clientWidth;
