@@ -1,10 +1,38 @@
-export type APIMessage  = RepeatAction;
+export type APIMessage  = RepeatAction | SingleAction | JumpAction | SwitchAction | StopAction | PauseAction | DownloadAction;
 
 export interface RepeatAction {
     action: "repeatMode",
-    value?: boolean;
+    value?: boolean,
 }
-console.log("Started");
+
+export interface SingleAction {
+    action: "singleMode",
+    value?: boolean,
+}
+
+export interface JumpAction {
+    action: "jump",
+    direction: "left" | "right";
+    time?: number,
+}
+
+export interface SwitchAction {
+    action: "switchSong",
+    direction: "prev" | "next",
+}
+
+export interface StopAction {
+    action: "stop",
+}
+
+export interface PauseAction {
+    action: "switchPause",
+}
+
+export interface DownloadAction {
+    action: "download",
+}
+
 
 browser.runtime.onMessageExternal.addListener((message: APIMessage) => {
 	console.log("Got API message", message);

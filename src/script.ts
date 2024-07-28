@@ -216,28 +216,6 @@ function preparePlayer() {
 		a.click(); 
 	}
 
-	document.addEventListener('keydown', (e) => {
-		// TODO: move to API and make it controllable by tridactyl
-		// TODO: add indicators for currently active modes
-		if(e.key == 's') {
-			singleSongMode = !singleSongMode;
-		} else if(e.key == 'ArrowLeft') {
-			jumpSeconds(-5);
-		} else if(e.key == 'ArrowRight') {
-			jumpSeconds(5);
-		} else if(e.key == 'ArrowDown') {
-			tryNextSong();
-		} else if(e.key == 'ArrowUp') {
-			tryPrevSong();
-		} else if(e.key == 'S') {
-			stop();
-		} else if(e.key == 'p') {
-			switchPlay();
-		} else if(e.key == 'g') {
-			downloadSong(currentTrack);
-		}
-	}); 
-
 	browser.runtime.onMessage.addListener((message: APIMessage, _sender) => {
 		console.log("Received API message", message);
 		switch (message.action) {
@@ -245,9 +223,33 @@ function preparePlayer() {
 				repeatMode = message.value ?? !repeatMode;
 			        console.log("repeat mode: ", repeatMode);
 				break;
+			case "singleMode": 
+				singleSongMode = message.value ?? !singleSongMode;
+			        console.log("single song mode: ", singleSongMode);
+				break;
+			case "jump": 
+				const value = message.time ? message.time : 5;
+			        const time = message.direction == "left" ? -value : value;
+				jumpSeconds(time)
+				break;
+			case "switchSong": 
+				if(message.direction == "prev") {
+					tryPrevSong();
+			        } else if(message.direction == "next") {
+					tryNextSong();
+				}
+				break;
+			case "stop": 
+				stop();
+				break;
+			case "switchPause": 
+				switchPlay();
+				break;
+			case "download": 
+				downloadSong(currentTrack);
+				break;
 		}
 	});
-
 
 	progressContainer.addEventListener('click', (e) => {
 		const width = progressContainer.clientWidth;
